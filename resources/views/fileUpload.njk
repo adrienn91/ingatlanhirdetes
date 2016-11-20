@@ -1,0 +1,16 @@
+{% extends 'layout' %}
+
+{% block content %}
+<div class="col-md-12">
+<h1>Képek feltöltése</h1>
+
+</div>
+
+  {{ form.open({ action: 'FileController.store', files: true, class: 'dropzone', id: 'files-uploader'}) }}
+
+    {{ csrfField }}
+    <div class="fallback">{{ form.file('file') }}</div>
+
+{{ form.close() }}
+
+{% endblock %}

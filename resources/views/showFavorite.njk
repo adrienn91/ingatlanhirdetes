@@ -1,0 +1,45 @@
+{% extends 'layout' %}
+
+{% block content %}
+
+<h2>Kiemelt hirdetések</h2>
+
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">Kiemelt hirdetésink</div>
+      <div class="panel-body">
+        <ul class="list-group">
+        {% for favorite in favorites %}
+          <li class="list-group-item clearfix">
+              <div class="col-md-4 col-sm-6">
+              <img class="img-thumbnail" src="{{ favorite.property.image }}" alt="image"
+              width="300" height="150">
+              </div>
+              <div class="col-md-3 col-sm-6">
+              <p class="text-center">Város: {{ favorite.property.city }} </p></br>
+              <p class="text-center">Cím: {{ favorite.property.address }} </p>
+              </div>
+              <div class="col-md-3 col-sm-6">
+              <p class="text-center">Ár: {{ favorite.property.price }} Ft</p></br>
+              <p class="text-center">Terület: {{ favorite.property.size }} nm </p>
+              </div>
+              <div class="col-md-2 col-sm-6">
+                <a href="/advertisments/{{ favorite.property.id }}">
+                  Részletek
+                </a>
+              </div>
+          </li>
+          
+        {% endfor %}
+      </ul>
+    </div>    
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+      
+        

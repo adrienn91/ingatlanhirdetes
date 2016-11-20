@@ -1,0 +1,51 @@
+{% extends 'layout' %}
+
+{% block content %}
+
+<h2>Részletes Leírás</h2>
+<div class="col-md-12">
+    <h3>Kép: </h3>
+     <img class="img-thumbnail" src="{{ property.image }}" alt="image"
+              width="300" height="150">
+</div>
+<div class="col-md-6">
+    <h3>Ár: {{ property.price }} Ft</h3>
+    <h3>Város: {{ property.city }}</h3>
+    <h3>Cím: {{ property.address }}</h3>
+    <h3>Állapot: {{ property.condition }}</h3>
+
+</div>
+
+<div class="col-md-6">
+    <h3>Méret: {{ property.size }} nm</h3>
+    <h3>Ingatlan típusa: {{ property.property_type }}</h3>
+    <h3>Emelet: {{ property.floor }}</h3>
+    {% if property.adType.is_sale == Y and property.adType.is_rent == N %}
+        <h3>Hirdetés típusa: Eladó</h3>
+    {% elif property.adType.is_sale == Y and property.adType.is_rent == Y %}
+        <h3>Hirdetés típusa:Eladó és Kiadó</h3>
+    {% else %}
+        <h3>Hirdetés típusa: Kiadó</h3>
+    {% endif %}
+
+</div>
+<div class="col-md-12">
+
+    <h3>Leírás</h3>
+    <blockquote class="pull-left">
+
+     <p> {{ property.desctiption }}</p>
+     </blockquote>
+</div>
+
+
+{% if currentUser.id == property.user_id %}
+<a class="btn btn-primary" href="/advertisments/{{property.id}}/edit" role="button">Szerkeszt</a>
+<a class="btn btn-danger" href="/advertisments/{{property.id}}/delete" role="button">Töröl</a>
+
+{% endif %}
+
+<a class="btn btn-info" href="/advertisments/{{property.id}}/favorite" role="button">
+ <span class=" glyphicon glyphicon-star"></span> Kedvencnek jelölöm</a>
+
+{% endblock %}

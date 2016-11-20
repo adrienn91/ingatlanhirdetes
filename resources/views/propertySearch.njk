@@ -1,0 +1,72 @@
+{% extends 'layout' %}
+
+{% block title %}Hirdetések böngészése{% endblock %}
+{% block content %}
+  <h1>Hirdetések böngészése</h1>
+  <form action="/advertisments" method="GET">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="inputpropertyAddress">Cím</label>
+          <input type="text" class="form-control" placeholder="Cím" id="inputpropertyAddress" name="propertyAddress" value="{{ filters.propertyAddress }}">
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="inputCreatedBy">Beküldte</label>
+          <select class="form-control" id="inputCreatedBy" name="createdBy">
+            <option value="">--</option>
+            {% for user in users %}
+            {% if filters.createdBy == user.id %}
+            <option value="{{ user.id }}" selected>{{ user.username }}</option>
+            {% else %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-block btn-primary" type="submit">Szűrés</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <h2>Találatok ({{ property.total }})</h2>
+  {% for propertyBatch in property.data | batch(3) %}
+  <div class="row">
+    {% for property in propertyBatch %}
+    <div class="col-md-4">
+      <a class="result-item" href="/advertisments/{{ property.id }}">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <strong>{{ property.address }}</strong><br>
+            beküldte <em>{{ property.users.username }}</em>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  Nincs a szűrésnek megfelelő recept.
+  {% endfor %}
+  {% if property.lastPage > 1 %}
+  <div class="text-center">
+    <ul class="pagination">
+      {% for page in range(1, property.lastPage + 1) %}
+      {% if page == property.currentPage %}
+      <li class="active">
+        <a href="/advertisments?p={{ page }}&amp;propertyAddress={{ filters.propertyAddress }}&amp;createdBy={{ filters.createdBy }}">{{ page }}</a>
+      </li>
+      {% else %}
+      <li><a href="/advertisments?p={{ page }}&amp;propertyAddress={{ filters.propertyAddress }}&amp;createdBy={{ filters.createdBy }}">{{ page }}</a></li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+{% endblock %}
